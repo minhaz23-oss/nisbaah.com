@@ -2,10 +2,10 @@ import { Webhook } from 'svix';
 import { headers } from 'next/headers';
 import { createUser } from '@/lib/actions/user.actions';
 
-import { createClerkClient } from '@clerk/backend';
+
 
 export async function POST(req) {
-  const clerkClient = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+
 
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the endpoint
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -62,13 +62,7 @@ export async function POST(req) {
         username: username
     }
     const newUser = await createUser(user)
-    if(newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-              userId: newUser._id
-          }
-      });
-  }
+   
     return NextResponse.json({message: 'user created successfully'})
   }
   console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
